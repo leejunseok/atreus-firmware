@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Kaleidoscope-Ranges.h"
 #include "Kaleidoscope.h"
 
-class AppSwitcher : public kaleidoscope::Plugin {
+class AppSwitcher_ : public kaleidoscope::Plugin {
 public:
-  AppSwitcher() {}
+  AppSwitcher_(void) {}
 
   void setHoldKey(Key key);
   void setHostHoldKey(Key key);
@@ -18,12 +17,12 @@ public:
                                                     uint8_t key_state);
 
 private:
-  bool hold_key_held_;
-  bool active_;
-  Key hold_key_;
-  Key host_hold_key_;
-  Key host_forward_key_;
-  Key host_reverse_key_;
+  static bool hold_key_held_;
+  static bool active_;
+  static Key hold_key_;
+  static Key host_hold_key_;
+  static Key host_forward_key_;
+  static Key host_reverse_key_;
 };
 
-AppSwitcher AppSwitcher;
+extern AppSwitcher_ AppSwitcher;

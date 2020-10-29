@@ -1,16 +1,21 @@
-#pragma once
+#include "AppSwitcher.h"
 
 #include "Kaleidoscope-Ranges.h"
 #include "Kaleidoscope.h"
 
-#include "AppSwitcher.h"
+bool AppSwitcher_::hold_key_held_ = false;
+bool AppSwitcher_::active_ = false;
+Key AppSwitcher_::hold_key_ = Key_NoKey;
+Key AppSwitcher_::host_hold_key_ = Key_NoKey;
+Key AppSwitcher_::host_forward_key_ = Key_NoKey;
+Key AppSwitcher_::host_reverse_key_ = Key_NoKey;
 
-void AppSwitcher::setHoldKey(Key key) { hold_key_ = key; }
-void AppSwitcher::setHostHoldKey(Key key) { host_hold_key_ = key; }
-void AppSwitcher::setHostForwardKey(Key key) { host_forward_key_ = key; }
-void AppSwitcher::setHostReverseKey(Key key) { host_reverse_key_ = key; }
+void AppSwitcher_::setHoldKey(Key key) { hold_key_ = key; }
+void AppSwitcher_::setHostHoldKey(Key key) { host_hold_key_ = key; }
+void AppSwitcher_::setHostForwardKey(Key key) { host_forward_key_ = key; }
+void AppSwitcher_::setHostReverseKey(Key key) { host_reverse_key_ = key; }
 
-kaleidoscope::EventHandlerResult AppSwitcher::beforeReportingState() {
+kaleidoscope::EventHandlerResult AppSwitcher_::beforeReportingState() {
   if (active_) {
     kaleidoscope::Runtime.hid().keyboard().pressKey(host_hold_key_, false);
     handleKeyswitchEvent(host_hold_key_, UnknownKeyswitchLocation, IS_PRESSED);
@@ -18,7 +23,7 @@ kaleidoscope::EventHandlerResult AppSwitcher::beforeReportingState() {
 }
 
 kaleidoscope::EventHandlerResult
-AppSwitcher::onKeyswitchEvent(Key &key, KeyAddr key_addr, uint8_t key_state) {
+AppSwitcher_::onKeyswitchEvent(Key &key, KeyAddr key_addr, uint8_t key_state) {
   // We want nothing to do with the host_hold_key_. Other keys might
   // deactivate AppSwitcher, but not the host_hold_key_.
   if (key == host_hold_key_) {
@@ -82,3 +87,5 @@ AppSwitcher::onKeyswitchEvent(Key &key, KeyAddr key_addr, uint8_t key_state) {
   }
   return kaleidoscope::EventHandlerResult::OK;
 }
+
+AppSwitcher_ AppSwitcher;
